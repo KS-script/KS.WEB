@@ -100,7 +100,7 @@ tiltElements.forEach(el => {
         const rotateX = ((y - centerY) / centerY) * -maxTilt;
         const rotateY = ((x - centerX) / centerX) * maxTilt;
         
-        // 즉시 transform 적용 (transition 없이)
+        // 즉시 적용 (transition 없이)
         el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
         
         // Move glow effect if exists
@@ -305,18 +305,15 @@ const observer = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
             
-            // Feature 카드: 등장 애니메이션 완료 후 tilt-ready 클래스 추가
-            if (entry.target.classList.contains('feature-card')) {
-                const delay = parseInt(entry.target.dataset.delay) || 0;
-                setTimeout(() => {
-                    entry.target.classList.add('tilt-ready');
-                }, 800 + delay); // 등장 애니메이션 시간 + delay
-            }
+            // visible 클래스가 추가된 후 transform transition 제거 (tilt 효과를 위해)
+            setTimeout(() => {
+                entry.target.classList.add('tilt-ready');
+            }, 800); // 진입 애니메이션이 끝난 후
         }
     });
 }, observerOptions);
 
-// 동적 스타일 추가 - transform transition은 등장 애니메이션에만 사용
+// Add CSS for animation - transform transition을 분리
 const style = document.createElement('style');
 style.textContent = `
     .feature-card, .script-info-card, .social-card, .section-header {
@@ -324,8 +321,7 @@ style.textContent = `
         transform: translateY(50px);
         transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
                     transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-                    border-color 0.4s,
-                    box-shadow 0.4s;
+                    border-color 0.4s, box-shadow 0.4s;
     }
     
     .feature-card.visible, .script-info-card.visible, 
@@ -334,9 +330,11 @@ style.textContent = `
         transform: translateY(0);
     }
     
-    /* 핵심: tilt-ready 클래스가 추가되면 transform transition 제거 */
-    .feature-card.tilt-ready {
-        transition: border-color 0.4s, box-shadow 0.4s !important;
+    /* tilt-ready 클래스가 추가되면 transform transition 제거 */
+    .feature-card.tilt-ready,
+    .script-info-card.tilt-ready,
+    .social-card.tilt-ready {
+        transition: border-color 0.4s, box-shadow 0.4s;
     }
     
     .feature-card:nth-child(1) { transition-delay: 0s; }
@@ -344,12 +342,10 @@ style.textContent = `
     .feature-card:nth-child(3) { transition-delay: 0.2s; }
     .feature-card:nth-child(4) { transition-delay: 0.3s; }
     
-    .feature-card.tilt-ready:nth-child(1),
-    .feature-card.tilt-ready:nth-child(2),
-    .feature-card.tilt-ready:nth-child(3),
-    .feature-card.tilt-ready:nth-child(4) {
-        transition-delay: 0s !important;
-    }
+    .feature-card:nth-child(1).tilt-ready { transition-delay: 0s; }
+    .feature-card:nth-child(2).tilt-ready { transition-delay: 0s; }
+    .feature-card:nth-child(3).tilt-ready { transition-delay: 0s; }
+    .feature-card:nth-child(4).tilt-ready { transition-delay: 0s; }
 `;
 document.head.appendChild(style);
 
@@ -394,9 +390,7 @@ document.addEventListener('mousemove', (e) => {
         const speed = (index + 1) * 15;
         const moveX = (x - 0.5) * speed;
         const moveY = (y - 0.5) * speed;
-        const baseRotation = shape.style.transform.match(/rotate\(([^)]+)\)/);
-        const rotation = baseRotation ? baseRotation[1] : '0deg';
-        shape.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${parseFloat(rotation) + moveX}deg)`;
+        shape.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${moveX}deg)`;
     });
 });
 
