@@ -69,7 +69,7 @@ body {
     pointer-events: none;
     z-index: 99999;
     mix-blend-mode: difference;
-    transition: transform 0.1s ease;
+    transform: translate(-50%, -50%);
 }
 
 .cursor-follower {
@@ -80,7 +80,7 @@ body {
     position: fixed;
     pointer-events: none;
     z-index: 99998;
-    transition: all 0.15s ease-out;
+    transition: width 0.15s ease-out, height 0.15s ease-out, border-color 0.15s ease-out, background 0.15s ease-out;
     transform: translate(-50%, -50%);
 }
 
@@ -92,7 +92,8 @@ body {
 }
 
 .cursor-follower.clicking {
-    transform: translate(-50%, -50%) scale(0.8);
+    width: 35px;
+    height: 35px;
 }
 
 /* ==================== MOUSE GLOW ==================== */
@@ -570,7 +571,9 @@ nav {
     font-weight: 600;
     font-size: 16px;
     text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                border-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                background 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     border: none;
     position: relative;
@@ -756,7 +759,8 @@ nav {
     border-radius: 24px;
     padding: 50px 35px;
     text-align: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: border-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
     transform-style: preserve-3d;
@@ -865,6 +869,7 @@ nav {
     transform-style: preserve-3d;
     perspective: 1000px;
     will-change: transform;
+    transition: border-color 0.4s, box-shadow 0.4s;
 }
 
 .card-shine {
@@ -1004,7 +1009,7 @@ nav {
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -1255,7 +1260,8 @@ nav {
     text-align: center;
     text-decoration: none;
     color: var(--text-primary);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: border-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     flex-direction: column;
     align-items: center;
